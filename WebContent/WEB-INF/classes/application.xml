@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 开启spring的扫描 注意路径 -->
+	<context:component-scan base-package="lan.service"></context:component-scan>
+	<context:component-scan base-package="lan.dao"></context:component-scan>
+	<!-- 兼容3.x -->
+	<context:annotation-config />
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/testdb" />
+		<property name="username" value="root" />
+		<!-- 此处密码根据服务器数据库进行更换 -->
+		<property name="password" value="laxk123456" />
+	</bean>
+	
+	<!-- 注册sqlSessionFactoryBean -->
+     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动扫描mapper.xml配置文件 -->                     <!-- 此处注意：出现Injection错误时可能是没有扫描到XXXMapper.xml文件-->
+        <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"></property>
+        <!-- mybatis总的配置文件 -->
+        <property name="configLocation" value="classpath:mybatis.xml"></property>
+     </bean>
+     
+     <!-- mapper扫描器 -->
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+     	<!-- mapper接口所在包 -->
+       <property name="basePackage" value="lan.dao"/>
+       <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+     </bean>
+     
+
+     
+	
+
+
+</beans>

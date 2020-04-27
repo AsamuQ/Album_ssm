@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+	namespace:命名空间：一定唯一 ,必须是某个接口的完全限定名
+ -->
+<mapper namespace="lan.dao.UsersDao">
+	
+	<select id="queryOpenIdIsExist" parameterType="java.lang.String" resultType="Boolean">
+		select count(*) from users where openId = #{openid}
+	</select>
+	
+	<select id="queryUserByOpenID" parameterType="java.lang.String" resultType="lan.domain.Users">
+		select * from users where openId = #{openid}
+	</select>
+	
+	<insert id="saveUsers" parameterType="lan.domain.Users">
+		insert into users(openId) values(#{users.openId})
+	</insert>
+</mapper>
